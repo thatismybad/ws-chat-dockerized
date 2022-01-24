@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  client-ws:
+    container_name: client-ws
+    image: chat:client
+    build:
+      context: ../client-ws
+    ports:
+      - 7000:80
+    depends_on:
+      - chat-ws
+    environment:
+      - REACT_APP_WS_URL=localhost:7001
+
+  chat-ws:
+    container_name: chat-ws
+    image: chat:ws
+    restart: always
+    build:
+      context: .
+    ports:
+      - 7001:4000
+    command: npm run start:prod
